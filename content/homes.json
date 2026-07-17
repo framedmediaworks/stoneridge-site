@@ -1,0 +1,39 @@
+{
+  "homes": [
+    {
+      "plan": "The Ridge",
+      "address": "6449 E. Slow Cattle Dr., Prescott Valley, AZ 86314",
+      "status": "Active",
+      "price": "",
+      "beds": "3",
+      "baths": "3.5",
+      "sqft": "3,800",
+      "lot": "1.11 Acres · Lot 167",
+      "garage": "4-Car",
+      "description": "Single-story luxury main level with breathtaking golf course and mountain views, a spa-like primary suite, and a ~1,300 sq ft hobby garage. Lower level offers a finished rec room with a third en-suite.",
+      "mainPhoto": "https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC8zYThkZTEyMGMwMTIxODY3ODQwZTRhNTZhMjQyNDRmYi5qcGVn/exact/webp/900/600",
+      "photos": [
+        {"photo": "https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC9lZTFhM2ZlNmE4YmFkM2I1ZDJmMjkwNzhjZTJmN2I5Yy5qcGVn/exact/webp/300/200"},
+        {"photo": "https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC9hNTkzMDdkMDUyYjJiODQyMjMzNzRkYmFkMDZhZTExYi5qcGVn/exact/webp/300/200"},
+        {"photo": "https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC8xNmVjNTljNzFlNTFiNWZjOThkOWY2ZDI2ZGI5ZTgwMS5qcGVn/exact/webp/300/200"},
+        {"photo": "https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC82ZDQyMGViNzc3ZmFmZDU3MTkzZjkyYmVhMmE1MjNhNC5qcGVn/exact/webp/300/200"}
+      ],
+      "video": "https://player.vimeo.com/video/1065323855"
+    },
+    {
+      "plan": "The Meridian II",
+      "address": "6319 E. Slow Cattle Dr., Prescott Valley, AZ 86314",
+      "status": "Sold",
+      "price": "",
+      "beds": "3",
+      "baths": "2.5",
+      "sqft": "2,590",
+      "lot": "",
+      "garage": "",
+      "description": "This homesite has sold. New Meridian II releases open as future phases break ground — join the interest list to hear first.",
+      "mainPhoto": "",
+      "photos": [],
+      "video": ""
+    }
+  ]
+}

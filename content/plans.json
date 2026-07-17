@@ -1,0 +1,31 @@
+{
+  "plans": [
+    {
+      "eyebrow": "The 2000 Plan",
+      "name": "The Outlaw",
+      "sqft": "2,021",
+      "beds": "3",
+      "baths": "2",
+      "price": "From $709,000",
+      "description": "A tightly efficient layout with premium finishes standard, not optional — no upgrades required to get what you want."
+    },
+    {
+      "eyebrow": "The 2200 Plan",
+      "name": "The Hondo",
+      "sqft": "2,204",
+      "beds": "3",
+      "baths": "2.5",
+      "price": "From $709,000",
+      "description": "Room to spread out with the hot-button features today's buyers ask for most, built around everyday livability."
+    },
+    {
+      "eyebrow": "The 2600 Plan",
+      "name": "The Rio Bravo",
+      "sqft": "2,688",
+      "beds": "3",
+      "baths": "3.5",
+      "price": "From $775,000",
+      "description": "The largest of the series — quality represented in both the plan and the day-to-day execution of every build."
+    }
+  ]
+}
