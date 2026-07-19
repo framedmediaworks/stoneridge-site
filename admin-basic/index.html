@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StoneRidge Content Manager</title>
+  <link rel="icon" type="image/png" href="../logo.png">
+  <!-- Netlify Identity widget: handles login for editors -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Decap CMS (formerly Netlify CMS) -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Redirect to home page after login/logout actions so the widget flow completes cleanly
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    // ---- Live preview: shows Krista/Mike a real styled card while they edit,
+    // instead of blank form fields with no visual feedback. ----
+    var h = window.h; // Decap exposes createClass/createElement helpers as globals
+
+    CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&display=swap");
+    CMS.registerPreviewStyle("/styles.css");
+    CMS.registerPreviewStyle(`
+      body{background:#F0F2ED; padding:30px; font-family:'Public Sans',sans-serif;}
+      .preview-wrap{max-width:640px; margin:0 auto;}
+    `, {raw: true});
+
+    var HomePreview = createClass({
+      render: function () {
+        var homes = this.props.entry.getIn(["data", "homes"]) || [];
+        var getAsset = this.props.getAsset;
+        return h("div", {className: "preview-wrap"},
+          homes.map(function (e, i) {
+            var status = e.get("status") || "Active";
+            var isSold = status.toLowerCase() !== "active";
+            var mainPhoto = e.get("mainPhoto") ? getAsset(e.get("mainPhoto")) : null;
+            var specs = ["beds", "baths", "sqft", "garage"].map(function(k){ return e.get(k); });
+            return h("div", {key: i, className: "avail-card " + (isSold ? "sold" : "featured"), style:{marginBottom:"24px"}},
+              !isSold && h("div", {className: "avail-photo"},
+                h("span", {className: "avail-status"}, status),
+                mainPhoto && h("img", {src: mainPhoto.toString(), alt: ""})
+              ),
+              h("div", {className: "avail-body"},
+                isSold && h("span", {className: "avail-status", style:{position:"static", display:"inline-block", marginBottom:"14px"}}, status),
+                h("div", {className: "plan-eyebrow"}, e.get("plan")),
+                h("h3", null, e.get("address")),
+                e.get("lot") && h("p", {className: "avail-addr"}, e.get("lot")),
+                h("div", {className: "avail-specs"},
+                  specs.filter(Boolean).map(function(s, j){ return h("span", {key: j}, s); })
+                ),
+                e.get("price") && h("div", {className: "plan-price", style:{margin:"0 0 16px"}}, e.get("price")),
+                h("p", {className: "desc"}, e.get("description"))
+              )
+            );
+          })
+        );
+      }
+    });
+
+    var PlanPreview = createClass({
+      render: function () {
+        var plans = this.props.entry.getIn(["data", "plans"]) || [];
+        return h("div", {className: "preview-wrap"},
+          plans.map(function (e, i) {
+            return h("div", {key: i, className: "plan-card", style:{marginBottom:"20px"}},
+              h("div", {className: "plan-eyebrow"}, e.get("eyebrow")),
+              h("h3", null, e.get("name")),
+              h("span", {className: "plan-sqft"},
+                (e.get("sqft") || "") + " SQ FT · " + (e.get("beds") || "") + " Bed · " + (e.get("baths") || "") + " Bath"
+              ),
+              h("p", null, e.get("description")),
+              e.get("price") && h("div", {className: "plan-price"}, e.get("price"))
+            );
+          })
+        );
+      }
+    });
+
+    CMS.registerPreviewTemplate("homes", HomePreview);
+    CMS.registerPreviewTemplate("plans", PlanPreview);
+  </script>
+</body>
+</html>

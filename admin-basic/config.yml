@@ -1,0 +1,67 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Branding: shows the StoneRidge logo on the login screen instead of the generic Decap mark
+logo_url: "/logo.png"
+site_url: "https://stoneridgeaz.com"
+display_url: "https://stoneridgeaz.com"
+
+# Where uploaded photos get stored in the repo, and the public URL path used to reach them
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# Changes save straight to the live site the moment someone clicks "Publish" —
+# no draft/review step. Add "publish_mode: editorial_workflow" back above
+# collections: if you ever want a review step before things go live.
+
+collections:
+  - name: "homes"
+    label: "Available Homes"
+    files:
+      - file: "content/homes.json"
+        label: "Homes List"
+        name: "homes"
+        fields:
+          - label: "Homes"
+            name: "homes"
+            widget: "list"
+            summary: "{{fields.address}} — {{fields.status}}"
+            fields:
+              - {label: "Plan / Home Name", name: "plan", widget: "string"}
+              - {label: "Address", name: "address", widget: "string"}
+              - {label: "Status", name: "status", widget: "select", options: ["Active", "Pending", "Sold"]}
+              - {label: "Price (leave blank to hide)", name: "price", widget: "string", required: false, hint: "e.g. From $709,000"}
+              - {label: "Beds", name: "beds", widget: "string"}
+              - {label: "Baths", name: "baths", widget: "string"}
+              - {label: "Square Footage", name: "sqft", widget: "string"}
+              - {label: "Lot Size", name: "lot", widget: "string", required: false}
+              - {label: "Garage", name: "garage", widget: "string", required: false}
+              - {label: "Description", name: "description", widget: "text"}
+              - {label: "Main Photo", name: "mainPhoto", widget: "image"}
+              - label: "Additional Photos"
+                name: "photos"
+                widget: "list"
+                required: false
+                field: {label: "Photo", name: "photo", widget: "image"}
+              - {label: "Video Tour URL", name: "video", widget: "string", required: false, hint: "Optional — paste a Vimeo/YouTube link"}
+
+  - name: "plans"
+    label: "Floor Plans"
+    files:
+      - file: "content/plans.json"
+        label: "Plans List"
+        name: "plans"
+        fields:
+          - label: "Plans"
+            name: "plans"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.sqft}}"
+            fields:
+              - {label: "Plan Number / Eyebrow", name: "eyebrow", widget: "string", hint: "e.g. The 2000 Plan"}
+              - {label: "Plan Name", name: "name", widget: "string", hint: "e.g. The Outlaw"}
+              - {label: "Square Footage", name: "sqft", widget: "string"}
+              - {label: "Beds", name: "beds", widget: "string"}
+              - {label: "Baths", name: "baths", widget: "string"}
+              - {label: "Price", name: "price", widget: "string", hint: "e.g. From $709,000"}
+              - {label: "Description", name: "description", widget: "text"}

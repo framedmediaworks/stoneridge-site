@@ -1,27 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StoneRidge Content Manager</title>
-  <link rel="icon" type="image/png" href="../logo.png">
-  <!-- Netlify Identity widget: handles login for editors -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Site Manager | StoneRidge</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="admin.css">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <!-- Decap CMS (formerly Netlify CMS) -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    // Redirect to home page after login/logout actions so the widget flow completes cleanly
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <img src="logo-black.png" alt="StoneRidge" class="login-logo">
+    <div class="eyebrow" style="justify-content:center;">Site Manager</div>
+    <p class="login-sub">Sign in to manage available homes and floor plans.</p>
+    <button id="loginBtn" class="btn btn-solid" style="width:100%; justify-content:center; margin-top:22px;">Sign In</button>
+    <a href="#" id="backToSiteLogin" class="login-back">&larr; Back to the site</a>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD (hidden until logged in) ============ -->
+<div id="dashboard" class="dashboard" style="display:none;">
+
+  <header class="admin-header">
+    <div class="wrap admin-header-row">
+      <a href="#" id="backToSiteHeader" class="brand">
+        <img src="logo.png" alt="StoneRidge logo">
+        <span class="brand-word"><span class="cap">S</span>tone<span class="cap">R</span>idge <span style="opacity:.6; font-size:.7em; margin-left:8px;">Site Manager</span></span>
+      </a>
+      <div class="admin-header-actions">
+        <span id="userEmail" class="user-email"></span>
+        <button id="logoutBtn" class="btn btn-ghost" style="padding:10px 18px; font-size:11px;">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap admin-body">
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="homes">Available Homes</button>
+      <button class="admin-tab" data-tab="plans">Floor Plans</button>
+    </div>
+
+    <div id="statusBanner" class="status-banner" style="display:none;"></div>
+
+    <!-- HOMES TAB -->
+    <div class="admin-panel" data-panel="homes">
+      <div class="admin-panel-head">
+        <div>
+          <div class="eyebrow">Available Now</div>
+          <h2 style="font-size:32px;">Homes</h2>
+        </div>
+        <button class="btn btn-solid" id="addHomeBtn">+ Add New Home</button>
+      </div>
+      <div id="homesList" class="admin-grid"><p class="loading-msg">Loading&hellip;</p></div>
+    </div>
+
+    <!-- PLANS TAB -->
+    <div class="admin-panel" data-panel="plans" style="display:none;">
+      <div class="admin-panel-head">
+        <div>
+          <div class="eyebrow">Western Classic Series</div>
+          <h2 style="font-size:32px;">Floor Plans</h2>
+        </div>
+        <button class="btn btn-solid" id="addPlanBtn">+ Add New Plan</button>
+      </div>
+      <div id="plansList" class="admin-grid"><p class="loading-msg">Loading&hellip;</p></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ EDIT MODAL ============ -->
+<div id="editModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle">Edit</h3>
+      <button id="modalClose" class="modal-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-form" id="modalForm"><!-- fields injected by admin.js --></div>
+      <div class="modal-preview">
+        <div class="eyebrow" style="margin-bottom:14px;">Live Preview</div>
+        <div id="previewStage"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="deleteEntryBtn" class="btn btn-line" style="border-color:#B5482A; color:#B5482A; display:none;">Delete</button>
+      <div style="flex:1;"></div>
+      <button id="cancelEditBtn" class="btn btn-line">Cancel</button>
+      <button id="saveEntryBtn" class="btn btn-solid">Save &amp; Publish</button>
+    </div>
+  </div>
+</div>
+
+<script src="admin.js"></script>
 </body>
 </html>
