@@ -35,9 +35,10 @@ if(availGrid){
 
         if(!isSold){
           // Featured / active home card, full photo + gallery treatment
-          const thumbs = (h.photos || []).slice(0,4).map(p =>
-            `<img src="${escapeHTML(p.photo)}" alt="" loading="lazy">`
-          ).join('');
+          const thumbs = (h.photos || []).slice(0,4).map(p => {
+            const url = typeof p === 'string' ? p : (p && p.photo) || '';
+            return url ? `<img src="${escapeHTML(url)}" alt="" loading="lazy">` : '';
+          }).join('');
           const videoBtn = h.video
             ? `<a href="${escapeHTML(h.video)}" target="_blank" rel="noopener" class="btn btn-line">Watch Video Tour</a>`
             : '';
