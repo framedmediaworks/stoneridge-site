@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Community news and construction updates from StoneRidge, a golf and lifestyle community in Prescott Valley, Arizona.">
+<link rel="icon" type="image/png" href="logo.png">
+<title>News &amp; Updates | StoneRidge &mdash; Prescott Valley, AZ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ---------- NEWS / UPDATES ---------- */
+.news-section{padding:110px 0 120px; background:var(--ivory);}
+.news-list{max-width:880px;}
+.news-item{
+  padding-bottom:56px; margin-bottom:56px; border-bottom:1px solid var(--line);
+}
+.news-item:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+.news-photo{margin-bottom:30px; border-radius:4px; overflow:hidden; box-shadow:var(--shadow);}
+.news-photo img{width:100%; height:auto; display:block;}
+.news-item.featured .news-photo img{max-height:460px; object-fit:cover;}
+.news-date{
+  font-family:'Space Mono',monospace; font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--canyon); margin-bottom:14px;
+}
+.news-item h2{
+  font-size:clamp(28px,3.6vw,44px); line-height:1.02; margin-bottom:18px; color:var(--pine-dark);
+}
+.news-excerpt{
+  font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic;
+  color:var(--granite); margin-bottom:20px; line-height:1.55;
+}
+.news-item p{font-size:16px; line-height:1.8; color:#4e4e47; margin-bottom:16px; max-width:68ch;}
+.news-empty{font-family:'Space Mono',monospace; font-size:14px; color:#8a8a80;}
+@media (max-width: 700px){
+  .news-section{padding:70px 0 80px;}
+  .news-item{padding-bottom:40px; margin-bottom:40px;}
+}
+</style>
+</head>
+<body>
+
+<header id="siteHeader" class="solid">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <img src="logo.png" alt="StoneRidge logo">
+    </a>
+    <nav class="primary">
+      <a href="index.html">Home</a>
+      <a href="golf.html">Golf Club</a>
+      <a href="amenities.html">Amenities</a>
+      <a href="homes.html">New Homes</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="tel:9289254926" class="nav-phone">(928) 925-4926</a>
+      <a href="contact.html" class="btn btn-ghost nav-cta" style="padding:11px 20px; font-size:11px;">Join Interest List</a>
+      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / News &amp; Updates</div>
+    <div class="eyebrow">From the Community</div>
+    <h1>News &amp; Updates</h1>
+    <p>Construction progress, community events, and announcements from the foothills of the Bradshaw Mountains.</p>
+  </div>
+</section>
+
+<section class="news-section">
+  <div class="wrap">
+    <div id="newsList" class="news-list">
+      <p style="font-family:'Space Mono',monospace; font-size:13px; color:#8a8a80;">Loading the latest&hellip;</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Be first to hear what&rsquo;s next</h2>
+    <p>Join the interest list and we&rsquo;ll let you know as new homes and phases are released.</p>
+    <div class="cta-ctas">
+      <a href="contact.html" class="btn btn-solid">Join the Interest List</a>
+      <a href="homes.html" class="btn btn-ghost">View Available Homes</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="logo.png" alt="StoneRidge logo" style="height:46px; filter:brightness(0) invert(1); margin-bottom:16px;">
+        <p>A premier golf &amp; lifestyle community in the foothills of the Bradshaw Mountains, Prescott Valley, Arizona.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="golf.html">Golf Club</a></li>
+          <li><a href="amenities.html">Amenities</a></li>
+          <li><a href="homes.html">New Homes</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <ul>
+          <li>StoneRidge Homebuilding, LLC</li>
+          <li>1300 Stoneridge Dr, Suite 101</li>
+          <li>Prescott Valley, AZ 86314</li>
+          <li><a href="tel:9289254926">(928) 925-4926</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Follow</h5>
+        <div class="foot-social">
+          <a href="https://www.facebook.com/StoneRidgeCommunityCenter/" aria-label="Facebook">f</a>
+          <a href="https://www.instagram.com/stoneridgeaz" aria-label="Instagram">ig</a>
+          <a href="https://www.tiktok.com/@stoneridgeaz" aria-label="TikTok">tt</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 StoneRidge Homebuilding, LLC. All Rights Reserved. ROC 350351</span>
+      <div class="foot-links">
+        <a href="https://www.stoneridgeaz.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.stoneridgeaz.com/terms">Terms &amp; Conditions</a>
+        <a href="https://www.stoneridgeaz.com/accessibility">Accessibility Assistance</a>
+      </div>
+      <span class="eq-housing">Equal Housing Opportunity</span>
+      <span>Site design by Framed Media Works</span>
+      <a href="admin/" style="color:rgba(251,250,246,0.3); font-size:11px;">Staff Login</a>
+    </div>
+    <p class="foot-legal">Please keep in mind that some plans may be preliminary and all plans are subject to change. To continually improve our homes at StoneRidge Homebuilding, we may change our standard features and options and/or discontinue certain features &amp; options from time to time. Please see your StoneRidge Homebuilding representative for more details. All floor plans &amp; renderings are artist's conceptions &amp; are not intended to be an exact duplication of either the homes or the landscaping. Square footages &amp; room dimensions are approximate. Lot Premiums and HOA fees may apply. Prices are subject to change without notice. StoneRidge Homebuilding, LLC ROC 350351.</p>
+  </div>
+</footer>
+
+<script src="site.js"><\/script>
+<script src="blog-render.js"><\/script>
+</body>
+</html>
