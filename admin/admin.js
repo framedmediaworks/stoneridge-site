@@ -8,7 +8,7 @@
 // EDIT ME: the live public site's URL — this admin panel is deployed
 // separately from the main site, so "back to site" links need the
 // full address rather than a relative link.
-const MAIN_SITE_URL = "https://stoneridgeaz.com";
+const MAIN_SITE_URL = "https://stoneridgesite.netlify.app";
 
 document.getElementById("backToSiteLogin").href = MAIN_SITE_URL;
 document.getElementById("backToSiteHeader").href = MAIN_SITE_URL;
