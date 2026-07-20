@@ -8,7 +8,7 @@
 // EDIT ME: the live public site's URL — this admin panel is deployed
 // separately from the main site, so "back to site" links need the
 // full address rather than a relative link.
-const MAIN_SITE_URL = "https://stoneridgeadmin.com/";
+const MAIN_SITE_URL = "https://stoneridgeaz.com";
 
 document.getElementById("backToSiteLogin").href = MAIN_SITE_URL;
 document.getElementById("backToSiteHeader").href = MAIN_SITE_URL;
@@ -18,7 +18,7 @@ document.getElementById("backToSiteHeader").href = MAIN_SITE_URL;
 // from its own domain. So for anything we display here (previews, thumbnails), point
 // root-relative paths back at the live site. Full URLs (existing hotlinked photos) pass through untouched.
 function resolveImg(path) {
-  if (!path) return "";
+  if (!path || typeof path !== "string") return "";
   if (/^https?:\/\//i.test(path)) return path;
   return MAIN_SITE_URL.replace(/\/$/, "") + (path.startsWith("/") ? path : "/" + path);
 }
@@ -330,7 +330,11 @@ function wirePhotoFields(entry) {
   });
 
   // photo list (Additional Photos)
-  let currentPhotos = (entry.photos || []).slice();
+  // Normalize entries: older seed data stored each photo as {photo:"url"} (leftover
+  // from the original Decap CMS schema); new saves store plain URL strings. Handle both.
+  let currentPhotos = (entry.photos || [])
+    .map(p => (typeof p === "string" ? p : (p && p.photo) || ""))
+    .filter(Boolean);
   function renderThumbs(key) {
     const wrap = document.querySelector(`[data-list-for="${key}"]`);
     wrap.innerHTML = currentPhotos.map((p, i) =>
