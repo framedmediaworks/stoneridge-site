@@ -15,91 +15,113 @@
 </head>
 <body>
 
-<!-- ============ LOGIN SCREEN ============ -->
+<!-- ============ LOGIN ============ -->
 <div id="loginScreen" class="login-screen">
   <div class="login-card">
     <img src="logo-black.png" alt="StoneRidge" class="login-logo">
-    <div class="eyebrow" style="justify-content:center;">Site Manager</div>
-    <p class="login-sub">Sign in to manage available homes and floor plans.</p>
-    <button id="loginBtn" class="btn btn-solid" style="width:100%; justify-content:center; margin-top:22px;">Sign In</button>
-    <a href="#" id="backToSiteLogin" class="login-back">&larr; Back to the site</a>
+    <div class="login-rule"></div>
+    <div class="login-kicker">Site Manager</div>
+    <p class="login-sub">Sign in to update available homes, floor plans, and community news.</p>
+    <button id="loginBtn" class="btn btn-solid login-btn">Sign In</button>
+    <a href="#" id="backToSiteLogin" class="login-back">View the live site</a>
   </div>
 </div>
 
-<!-- ============ DASHBOARD (hidden until logged in) ============ -->
+<!-- ============ DASHBOARD ============ -->
 <div id="dashboard" class="dashboard" style="display:none;">
 
   <header class="admin-header">
-    <div class="wrap admin-header-row">
-      <a href="#" id="backToSiteHeader" class="brand">
-        <img src="logo.png" alt="StoneRidge logo">
-        <span class="brand-word"><span class="cap">S</span>tone<span class="cap">R</span>idge <span style="opacity:.6; font-size:.7em; margin-left:8px;">Site Manager</span></span>
-      </a>
+    <div class="admin-header-row">
+      <div class="admin-brand">
+        <img src="logo.png" alt="StoneRidge">
+        <span class="admin-brand-divider"></span>
+        <span class="admin-brand-label">Site Manager</span>
+      </div>
       <div class="admin-header-actions">
-        <span id="userEmail" class="user-email"></span>
-        <button id="logoutBtn" class="btn btn-ghost" style="padding:10px 18px; font-size:11px;">Log Out</button>
+        <a href="#" id="backToSiteHeader" target="_blank" rel="noopener" class="header-link">View Live Site &nearr;</a>
+        <span class="user-chip"><span id="userInitial" class="user-avatar"></span><span id="userEmail"></span></span>
+        <button id="logoutBtn" class="btn btn-ghost btn-sm">Log Out</button>
       </div>
     </div>
+    <nav class="admin-tabs">
+      <button class="admin-tab active" data-tab="homes">Available Homes<span class="tab-count" id="countHomes">0</span></button>
+      <button class="admin-tab" data-tab="plans">Floor Plans<span class="tab-count" id="countPlans">0</span></button>
+      <button class="admin-tab" data-tab="posts">News &amp; Updates<span class="tab-count" id="countPosts">0</span></button>
+    </nav>
   </header>
 
-  <div class="wrap admin-body">
-
-    <div class="admin-tabs">
-      <button class="admin-tab active" data-tab="homes">Available Homes</button>
-      <button class="admin-tab" data-tab="plans">Floor Plans</button>
-    </div>
-
+  <main class="admin-body">
     <div id="statusBanner" class="status-banner" style="display:none;"></div>
 
-    <!-- HOMES TAB -->
-    <div class="admin-panel" data-panel="homes">
+    <!-- HOMES -->
+    <section class="admin-panel" data-panel="homes">
       <div class="admin-panel-head">
         <div>
-          <div class="eyebrow">Available Now</div>
-          <h2 style="font-size:32px;">Homes</h2>
+          <div class="panel-eyebrow">Available Now</div>
+          <h2 class="panel-title">Homes</h2>
+          <p class="panel-help">Add a new listing, update a price, or mark a home as sold. Changes go live on the website immediately.</p>
         </div>
-        <button class="btn btn-solid" id="addHomeBtn">+ Add New Home</button>
+        <button class="btn btn-solid" id="addHomeBtn"><span class="btn-plus">+</span> Add New Home</button>
       </div>
       <div id="homesList" class="admin-grid"><p class="loading-msg">Loading&hellip;</p></div>
-    </div>
+    </section>
 
-    <!-- PLANS TAB -->
-    <div class="admin-panel" data-panel="plans" style="display:none;">
+    <!-- PLANS -->
+    <section class="admin-panel" data-panel="plans" style="display:none;">
       <div class="admin-panel-head">
         <div>
-          <div class="eyebrow">Western Classic Series</div>
-          <h2 style="font-size:32px;">Floor Plans</h2>
+          <div class="panel-eyebrow">Western Classic Series</div>
+          <h2 class="panel-title">Floor Plans</h2>
+          <p class="panel-help">The plans buyers can build. Update square footage, pricing, or descriptions here.</p>
         </div>
-        <button class="btn btn-solid" id="addPlanBtn">+ Add New Plan</button>
+        <button class="btn btn-solid" id="addPlanBtn"><span class="btn-plus">+</span> Add New Plan</button>
       </div>
       <div id="plansList" class="admin-grid"><p class="loading-msg">Loading&hellip;</p></div>
-    </div>
+    </section>
 
-  </div>
+    <!-- POSTS -->
+    <section class="admin-panel" data-panel="posts" style="display:none;">
+      <div class="admin-panel-head">
+        <div>
+          <div class="panel-eyebrow">Community</div>
+          <h2 class="panel-title">News &amp; Updates</h2>
+          <p class="panel-help">Post construction progress, events, and announcements. Published posts appear on the News page.</p>
+        </div>
+        <button class="btn btn-solid" id="addPostBtn"><span class="btn-plus">+</span> Write a Post</button>
+      </div>
+      <div id="postsList" class="admin-grid"><p class="loading-msg">Loading&hellip;</p></div>
+    </section>
+  </main>
 </div>
 
 <!-- ============ EDIT MODAL ============ -->
 <div id="editModal" class="modal-overlay" style="display:none;">
   <div class="modal-box">
     <div class="modal-head">
-      <h3 id="modalTitle">Edit</h3>
+      <div>
+        <div class="modal-kicker" id="modalKicker">Editing</div>
+        <h3 id="modalTitle">Edit</h3>
+      </div>
       <button id="modalClose" class="modal-close" aria-label="Close">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="modal-form" id="modalForm"><!-- fields injected by admin.js --></div>
+      <div class="modal-form" id="modalForm"></div>
       <div class="modal-preview">
-        <div class="eyebrow" style="margin-bottom:14px;">Live Preview</div>
+        <div class="preview-label">Live Preview</div>
+        <p class="preview-note">This is how it will look on the website.</p>
         <div id="previewStage"></div>
       </div>
     </div>
     <div class="modal-foot">
-      <button id="deleteEntryBtn" class="btn btn-line" style="border-color:#B5482A; color:#B5482A; display:none;">Delete</button>
-      <div style="flex:1;"></div>
-      <button id="cancelEditBtn" class="btn btn-line">Cancel</button>
+      <button id="deleteEntryBtn" class="btn btn-danger btn-sm">Delete</button>
+      <div class="foot-spacer"></div>
+      <button id="cancelEditBtn" class="btn btn-line btn-sm">Cancel</button>
       <button id="saveEntryBtn" class="btn btn-solid">Save &amp; Publish</button>
     </div>
   </div>
 </div>
+
+<div id="toast" class="toast"></div>
 
 <script src="admin.js"></script>
 </body>
