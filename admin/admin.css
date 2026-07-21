@@ -328,3 +328,12 @@ body{background:#F2F3EF;}
   .admin-card{transition:none;}
   .admin-card:hover{transform:none;}
 }
+
+/* ---------------- Drag-and-drop reordering ---------------- */
+.admin-card[draggable="true"] { cursor: grab; }
+.admin-card[draggable="true"]:active { cursor: grabbing; }
+.admin-card.dragging { opacity: 0.45; }
+.admin-card.drag-over {
+  outline: 2px dashed var(--canyon, #b0532a);
+  outline-offset: 3px;
+}
