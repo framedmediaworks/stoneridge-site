@@ -212,6 +212,56 @@ function render(name) {
     return;
   }
   el.innerHTML = c.list.map((item, i) => cardHTML(name, item, i, c.list.length)).join("");
+  enableDragReorder(name, el);
+}
+
+/* Drag-and-drop reordering (works alongside the arrow buttons) */
+let dragState = null;
+function enableDragReorder(name, el) {
+  const cards = Array.from(el.querySelectorAll(".admin-card"));
+  cards.forEach((card, i) => {
+    card.setAttribute("draggable", "true");
+    card.querySelectorAll("img").forEach(img => { img.draggable = false; });
+    card.addEventListener("dragstart", ev => {
+      dragState = { name: name, from: i };
+      card.classList.add("dragging");
+      ev.dataTransfer.effectAllowed = "move";
+      try { ev.dataTransfer.setData("text/plain", String(i)); } catch (e) {}
+    });
+    card.addEventListener("dragend", () => {
+      card.classList.remove("dragging");
+      cards.forEach(c2 => c2.classList.remove("drag-over"));
+      dragState = null;
+    });
+    card.addEventListener("dragover", ev => {
+      if (!dragState || dragState.name !== name || dragState.from === i) return;
+      ev.preventDefault();
+      ev.dataTransfer.dropEffect = "move";
+      card.classList.add("drag-over");
+    });
+    card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
+    card.addEventListener("drop", async ev => {
+      if (!dragState || dragState.name !== name) return;
+      ev.preventDefault();
+      const from = dragState.from;
+      const to = i;
+      dragState = null;
+      if (from === to) return;
+      const list = COLLECTIONS[name].list;
+      const snapshot = list.slice();
+      const moved = list.splice(from, 1)[0];
+      list.splice(to, 0, moved);
+      render(name);
+      try {
+        await saveCollection(name, "Reorder " + name + " via Site Manager");
+        toast("Order updated and published.");
+      } catch (e) {
+        COLLECTIONS[name].list = snapshot;
+        render(name);
+        toast(e.message, true);
+      }
+    });
+  });
 }
 
 function reorderHTML(name, i, total) {
@@ -508,7 +558,10 @@ $("saveEntryBtn").addEventListener("click", async () => {
   if (missing.length) { toast("Please fill in: " + missing.map(f => f.label).join(", "), true); return; }
 
   const snapshot = c.list.slice();
-  if (editing.index === null) c.list.push(entry); else c.list[editing.index] = entry;
+  if (editing.index === null) {
+    // New gallery photos go to the top so the newest shows first on the site.
+    if (editing.name === "gallery") c.list.unshift(entry); else c.list.push(entry);
+  } else c.list[editing.index] = entry;
 
   const btn = $("saveEntryBtn");
   btn.textContent = "Publishing\u2026"; btn.disabled = true;
