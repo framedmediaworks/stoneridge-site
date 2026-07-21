@@ -144,7 +144,7 @@
       </div>
       <a href="gallery.html" class="btn btn-line">View Full Gallery</a>
     </div>
-    <div class="reveal gal-grid">
+    <div class="reveal gal-grid" id="homeGalGrid">
       <a href="gallery.html"><img src="https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC84NWZhNGJhYWIwMTkyYTM4ZWUxYTkwYjQyMjZkYTc2NS5qcGVn/exact/webp/600/400" alt="StoneRidge exteriors" loading="lazy"></a>
       <a href="gallery.html"><img src="https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC84OTZjNGMxN2I1YjY0ZDI0NjM1M2QxNGMyM2ExODU1OC5qcGVn/exact/webp/600/400" alt="Homes at Lookout Ridge" loading="lazy"></a>
       <a href="gallery.html"><img src="https://dlqxt4mfnxo6k.cloudfront.net/stoneridgeaz.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC9jNjJhMzlmMDJiMDMyZDU4MjZkNjAzMTY3MjY1ZTQ4My5qcGVn/exact/webp/600/400" alt="Life at StoneRidge" loading="lazy"></a>
@@ -217,5 +217,23 @@
 
 <script src="site.js"></script>
 <script src="spotlight-render.js"></script>
+<script>
+/* Home page gallery: show the newest photos added through the Site Manager */
+(function () {
+  var grid = document.getElementById('homeGalGrid');
+  if (!grid) return;
+  function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+  fetch('content/gallery.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var photos = (data.gallery || []).filter(function (p) { return p && p.image; }).slice(0, 5);
+      if (!photos.length) return;
+      grid.innerHTML = photos.map(function (p) {
+        return '<a href="gallery.html"><img src="' + esc(p.image) + '" alt="' + esc(p.caption || 'Life at StoneRidge') + '" loading="lazy"></a>';
+      }).join('');
+    })
+    .catch(function () {});
+})();
+</script>
 </body>
 </html>
