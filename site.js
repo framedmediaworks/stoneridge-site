@@ -175,7 +175,8 @@ if(contactForm){
 // TO UPDATE EACH MONTH edit the CALENDAR object only.
 //   weekly - repeats on a weekday (0=Sun ... 6=Sat)
 //   skip   - date -> names NOT held that week
-//   dated  - date -> one-off events and meetings
+//   dated  - date -> one-off events. Third value is the END time, optional.
+//            ["5:00 PM", "Concert", "7:00 PM"] renders as 5:00 PM / Concert til 7:00 PM
 (function () {
   "use strict";
 
@@ -200,14 +201,14 @@ if(contactForm){
       1:  [ ["3:00 PM","BOD Study Session"] ],
       4:  [ [null,"Community Center closes at 2 PM"] ],
       8:  [ ["3:30 PM","CALC"] ],
-      9:  [ ["9:00 AM","DRC"], ["5:00 PM","Free Radicals Concert","5:00 - 7:00 PM"] ],
-      10: [ ["2:00 PM","Ladies Tea","2:00 - 4:00 PM"] ],
+      9:  [ ["9:00 AM","DRC"], ["5:00 PM","Free Radicals Concert","7:00 PM"] ],
+      10: [ ["2:00 PM","Ladies Tea","4:00 PM"] ],
       15: [ ["12:00 PM","Ladies Luncheon"], ["4:30 PM","Study Session"], ["5:30 PM","Board Meeting"] ],
-      18: [ ["12:00 PM","Kona Ice Backpack Drive","12:00 - 2:00 PM"] ],
+      18: [ ["12:00 PM","Kona Ice Backpack Drive","2:00 PM"] ],
       20: [ ["5:00 PM","Bunco"] ],
       23: [ ["9:00 AM","DRC"], ["1:00 PM","Finance Committee"] ],
       30: [ ["3:00 PM","Book Club"] ],
-      31: [ ["3:00 PM","TGIF","3:00 - 4:00 PM"] ]
+      31: [ ["3:00 PM","TGIF","4:00 PM"] ]
     }
   };
 
@@ -224,6 +225,15 @@ if(contactForm){
     return String(s).replace(/[&<>"]/g, function (c) {
       return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c];
     });
+  }
+
+  // compact display form: 9:00 AM -> 9am, 12:30 PM -> 12:30pm
+  function ccShort(t){
+    if (!t) return '';
+    var m = String(t).match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!m) return t;
+    var suf = m[3].toLowerCase();
+    return m[2] === '00' ? m[1] + suf : m[1] + ':' + m[2] + suf;
   }
 
   function ccMinutes(t){
@@ -264,7 +274,7 @@ if(contactForm){
     });
 
     (CALENDAR.dated[ccD] || []).forEach(function (row) {
-      ccEvents.push({ time: row[0], name: row[1], label: row[2], kind: 'special' });
+      ccEvents.push({ time: row[0], name: row[1], end: row[2], kind: 'special' });
       ccSpecials++;
     });
 
@@ -283,11 +293,13 @@ if(contactForm){
       if (!ev.time){
         ccHtml += '<p class="cc-ev cc-ev--special cc-ev--notice">' +
                     '<span class="cc-ev__name">' + ccEsc(ev.name) + '</span></p>';
-      } else {
-        ccHtml += '<p class="cc-ev cc-ev--' + ev.kind + '">' +
-                    '<span class="cc-ev__time">' + ccEsc(ev.label || ev.time) + '</span>' +
-                    '<span class="cc-ev__name">' + ccEsc(ev.name) + '</span></p>';
+        return;
       }
+      // end time rides on the name line, never in the fixed-width time column
+      var tail = ev.end ? ' <i class="cc-ev__till">til ' + ccShort(ev.end) + '</i>' : '';
+      ccHtml += '<p class="cc-ev cc-ev--' + ev.kind + '">' +
+                  '<span class="cc-ev__time">' + ccShort(ev.time) + '</span>' +
+                  '<span class="cc-ev__name">' + ccEsc(ev.name) + tail + '</span></p>';
     });
 
     ccHtml += '</div>';
