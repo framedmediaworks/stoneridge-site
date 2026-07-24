@@ -168,3 +168,145 @@ if(contactForm){
     btn.style.borderColor = 'var(--canyon)';
   });
 }
+
+
+// ---------- Community Center calendar (amenities.html) ----------
+// Self-contained and guarded: no-ops on every page without #ccGrid.
+// TO UPDATE EACH MONTH edit the CALENDAR object only.
+//   weekly - repeats on a weekday (0=Sun ... 6=Sat)
+//   skip   - date -> names NOT held that week
+//   dated  - date -> one-off events and meetings
+(function () {
+  "use strict";
+
+  var CALENDAR = {
+    year: 2026,
+    month: 6,               // zero-indexed: 6 = July
+    title: "July",
+
+    weekly: {
+      1: [ ["9:00 AM","Yoga"], ["12:30 PM","Bridge"], ["4:30 PM","Sing Along"] ],
+      2: [ ["7:45 AM","AM Shape Up"], ["8:35 AM","Water Aerobics"], ["9:35 AM","Water Aerobics"],
+           ["12:30 PM","Texas Hold 'Em"], ["2:00 PM","Hand & Foot"] ],
+      4: [ ["7:45 AM","AM Shape Up"], ["8:35 AM","Water Aerobics"], ["9:00 AM","Beaders"],
+           ["12:30 PM","Mahjong"], ["4:30 PM","Bible Study"] ],
+      5: [ ["9:00 AM","Yoga"], ["10:30 AM","Tai Chi"], ["1:00 PM","Omaha Poker"] ],
+      6: [ ["9:30 AM","Ballet"] ]
+    },
+
+    skip: { 2:["Beaders"], 3:["Yoga"], 4:["Ballet"] },
+
+    dated: {
+      1:  [ ["3:00 PM","BOD Study Session"] ],
+      4:  [ [null,"Community Center closes at 2 PM"] ],
+      8:  [ ["3:30 PM","CALC"] ],
+      9:  [ ["9:00 AM","DRC"], ["5:00 PM","Free Radicals Concert","5:00 - 7:00 PM"] ],
+      10: [ ["2:00 PM","Ladies Tea","2:00 - 4:00 PM"] ],
+      15: [ ["12:00 PM","Ladies Luncheon"], ["4:30 PM","Study Session"], ["5:30 PM","Board Meeting"] ],
+      18: [ ["12:00 PM","Kona Ice Backpack Drive","12:00 - 2:00 PM"] ],
+      20: [ ["5:00 PM","Bunco"] ],
+      23: [ ["9:00 AM","DRC"], ["1:00 PM","Finance Committee"] ],
+      30: [ ["3:00 PM","Book Club"] ],
+      31: [ ["3:00 PM","TGIF","3:00 - 4:00 PM"] ]
+    }
+  };
+
+  var calRoot = document.getElementById('calendar');
+  var calGrid = document.getElementById('ccGrid');
+  if (!calRoot || !calGrid) return;
+
+  var calCount  = document.getElementById('ccCount');
+  var calToggle = document.getElementById('ccStanding');
+  var calTitle  = document.getElementById('ccCalTitle');
+  var CC_DOW    = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  function ccEsc(s){
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c];
+    });
+  }
+
+  function ccMinutes(t){
+    if (!t) return -1;                        // all-day notices sort first
+    var m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!m) return 0;
+    var h = Number(m[1]) % 12;
+    if (/pm/i.test(m[3])) h += 12;
+    return h * 60 + Number(m[2]);
+  }
+
+  var ccFirst = new Date(CALENDAR.year, CALENDAR.month, 1);
+  var ccTotal = new Date(CALENDAR.year, CALENDAR.month + 1, 0).getDate();
+  var ccNow   = new Date();
+  var ccLive  = ccNow.getFullYear() === CALENDAR.year && ccNow.getMonth() === CALENDAR.month;
+
+  if (calTitle){
+    calTitle.innerHTML = ccEsc(CALENDAR.title) + ' <span>' + CALENDAR.year + '</span>';
+  }
+
+  var ccSpecials = 0;
+  var ccHtml = '';
+  var ccI, ccD;
+
+  for (ccI = 0; ccI < ccFirst.getDay(); ccI++){
+    ccHtml += '<div class="cc-day cc-day--blank" aria-hidden="true"></div>';
+  }
+
+  for (ccD = 1; ccD <= ccTotal; ccD++){
+    var ccDow  = new Date(CALENDAR.year, CALENDAR.month, ccD).getDay();
+    var ccSkip = CALENDAR.skip[ccD] || [];
+    var ccEvents = [];
+
+    (CALENDAR.weekly[ccDow] || []).forEach(function (row) {
+      if (ccSkip.indexOf(row[1]) === -1){
+        ccEvents.push({ time: row[0], name: row[1], kind: 'standing' });
+      }
+    });
+
+    (CALENDAR.dated[ccD] || []).forEach(function (row) {
+      ccEvents.push({ time: row[0], name: row[1], label: row[2], kind: 'special' });
+      ccSpecials++;
+    });
+
+    ccEvents.sort(function (a, b) { return ccMinutes(a.time) - ccMinutes(b.time); });
+
+    var ccCls = 'cc-day';
+    if (ccDow === 0 || ccDow === 6) ccCls += ' cc-day--weekend';
+    if (ccLive && ccNow.getDate() === ccD) ccCls += ' cc-day--today';
+
+    ccHtml += '<div class="' + ccCls + '">' +
+                '<span class="cc-day__num">' +
+                  '<span class="cc-day__dow">' + CC_DOW[ccDow] + '</span><b>' + ccD + '</b>' +
+                '</span>';
+
+    ccEvents.forEach(function (ev) {
+      if (!ev.time){
+        ccHtml += '<p class="cc-ev cc-ev--special cc-ev--notice">' +
+                    '<span class="cc-ev__name">' + ccEsc(ev.name) + '</span></p>';
+      } else {
+        ccHtml += '<p class="cc-ev cc-ev--' + ev.kind + '">' +
+                    '<span class="cc-ev__time">' + ccEsc(ev.label || ev.time) + '</span>' +
+                    '<span class="cc-ev__name">' + ccEsc(ev.name) + '</span></p>';
+      }
+    });
+
+    ccHtml += '</div>';
+  }
+
+  calGrid.innerHTML = ccHtml;
+
+  function ccSetCount(){
+    if (!calCount) return;
+    calCount.textContent = (calToggle && !calToggle.checked)
+      ? 'Weekly classes hidden'
+      : ccSpecials + ' special events this month';
+  }
+  ccSetCount();
+
+  if (calToggle){
+    calToggle.addEventListener('change', function () {
+      calRoot.classList.toggle('cc-cal--special', !calToggle.checked);
+      ccSetCount();
+    });
+  }
+})();
